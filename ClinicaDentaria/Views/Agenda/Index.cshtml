@@ -1,0 +1,41 @@
+﻿@model IEnumerable<ClinicaDentaria.Models.InfoAgendamento>
+
+@{
+    ViewData["Title"] = "Agenda";
+}
+
+<h2>Agenda</h2>
+
+<p>
+    <a asp-route-id="@ViewData["DentistaId"]" asp-action="Create">Criar Agenda</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Dentista
+            </th>
+            <th>
+                Data Disponível
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NomeDentista)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DtDisponivel)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.AgendaId" class="btn btn-default">Editar</a> |
+                    <a asp-action="Delete" asp-route-id="@item.AgendaId" class="btn btn-danger">Excluir</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

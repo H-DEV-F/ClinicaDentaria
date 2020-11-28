@@ -1,0 +1,77 @@
+﻿@model ClinicaDentaria.Models.Agenda
+
+@{
+    ViewData["Title"] = "Create";
+    var list = (List<ClinicaDentaria.Models.Dentista>)ViewData["Dentistas"];
+    var hora = "";
+
+}
+
+<h2>Create</h2>
+
+<h4>Agenda</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="DentistaId" class="control-label">Dentista</label>
+                @if (list.Count() > 1)
+                {
+                    <select asp-for="DentistaId" id="dentista-id" class="form-control">
+                        @foreach (var item in (List<ClinicaDentaria.Models.Dentista>)ViewData["Dentistas"])
+                        {
+                            <option value="@item.Id">@item.Nome</option>
+                        }
+                    </select>
+                }
+                else
+                {
+                    <select asp-for="DentistaId" id="dentista-id" class="form-control" readonly="readonly" tabindex="-1" aria-disabled="true">
+                        <option value="@list[0].Id">@list[0].Nome</option>
+                    </select>
+                }
+            </div>
+            <div class="form-group">
+                <label asp-for="SalaId" class="control-label">Sala</label>
+                <select asp-for="SalaId" class="form-control">
+                    @foreach (var item in (List<ClinicaDentaria.Models.Sala>)ViewData["Salas"])
+                    {
+                        <option value="@item.Id">@item.Numero / @item.Codigo</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group" data-provider="datepicker">
+                <label asp-for="DataDisponivel" class="control-label">Data</label>
+                <!--<input type="date" asp-for="DataDisponivel" class="form-control" />-->
+                <input asp-for="DataDisponivel" id="datepicker" type="text" class="form-control" />
+                <span asp-validation-for="DataDisponivel" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="hora" class="control-label">Hora</label>
+                <select name="hora" id="hora" class="form-control">
+                    <option value="@hora">@hora</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="PacienteId" class="control-label">Paciente</label>
+                <select asp-for="PacienteId" class="form-control">
+                    <option value="">Nenhum</option>
+                    @foreach (var item in (List<ClinicaDentaria.Models.Paciente>)ViewData["Pacientes"])
+                    {
+                        <option value="@item.Id">@item.Nome</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Salvar" class="btn btn-default" />
+                <a asp-action="Index" asp-route-id="@list[0].Id" class="btn btn-default">Voltar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
