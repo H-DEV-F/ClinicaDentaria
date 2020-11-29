@@ -46,7 +46,8 @@ namespace ClinicaDentaria.Controllers
         // GET: Pacientes/Create
         public IActionResult Create()
         {
-            return View();
+            Paciente paciente = new Paciente();
+            return View(paciente);
         }
 
         // POST: Pacientes/Create
@@ -58,16 +59,17 @@ namespace ClinicaDentaria.Controllers
         [Bind("Logradouro, Numero, Bairro, Cidade, Estado, CEP")] Endereco endereco,
         [Bind("Tipo, Telefone")] List<Contato> contato)
         {
+            
             if (ModelState.IsValid)
             {
-                _context.Add(paciente);
-                endereco.PacienteId = paciente.Id;
-                _context.Endereco.Add(endereco);
-                foreach (var c in contato)
+                paciente.Endereco = endereco;
+                paciente.Contato = contato;
+                paciente.Endereco.PacienteId = paciente.Id;
+                foreach (var c in paciente.Contato)
                 {
-                    c.PacienteId = paciente.Id;
-                    _context.Contato.Add(c);
+                     c.PacienteId = paciente.Id;
                 }
+                _context.Add(paciente);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -119,14 +121,13 @@ namespace ClinicaDentaria.Controllers
             {
                 try
                 {
-                    _context.Update(paciente);
-                    endereco.PacienteId = paciente.Id;
-                    _context.Update(endereco);
-                    foreach (var c in contato) {
+                    paciente.Endereco = endereco;
+                    paciente.Contato = contato;
+                    paciente.Endereco.PacienteId = paciente.Id;
+                    foreach (var c in paciente.Contato) {
                         c.PacienteId = paciente.Id;
-                        _context.Update(c);
-                        _context.SaveChanges();
                     }
+                    _context.Update(paciente);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

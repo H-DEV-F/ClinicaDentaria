@@ -82,6 +82,8 @@ namespace ClinicaDentaria.Controllers
         // GET: Agenda/Create
         public IActionResult Create(int? id)
         {
+            Agenda agenda = new Agenda();
+            agenda.DataDisponivel = DateTime.Now;
             var dentista = _context.Dentista.Where(m => m.Id == id).ToList();
             if (id == null)
             {
@@ -93,7 +95,7 @@ namespace ClinicaDentaria.Controllers
             }
             ViewData["Salas"] = _context.Sala.ToList();
             ViewData["Pacientes"] = _context.Paciente.ToList();
-            return View();
+            return View(agenda);
         }
 
         // POST: Agenda/Create

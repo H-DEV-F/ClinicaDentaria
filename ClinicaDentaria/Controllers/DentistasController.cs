@@ -46,7 +46,7 @@ namespace ClinicaDentaria.Controllers
         // GET: Dentistas/Create
         public IActionResult Create()
         {
-            Dentista dentista = new Dentista { Nome = "", Email = "" };
+            Dentista dentista = new Dentista();
             return View(dentista);
         }
 
