@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
-namespace ClinicaDentaria.Infra.Context
+namespace ClinicaDentaria.Api.Context
 {
     public class ApplicationDbContext : IdentityDbContext
     {

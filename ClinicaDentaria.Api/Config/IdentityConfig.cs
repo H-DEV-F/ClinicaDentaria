@@ -1,14 +1,14 @@
-﻿using ClinicaDentaria.Api.Extensions;
-using ClinicaDentaria.Infra.Context;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.DataProtection;
+﻿using System.IO;
+using System.Text;
+using ClinicaDentaria.Api.Context;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+using ClinicaDentaria.Api.Extensions;
 using Microsoft.IdentityModel.Tokens;
-using System.IO;
-using System.Text;
+using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace ClinicaDentaria.Api.Config
 {

@@ -1,4 +1,6 @@
-﻿namespace ClinicaDentaria.Domain.Entities
+﻿using ClinicaDentaria.Domain.ViewModels;
+
+namespace ClinicaDentaria.Domain.Entities
 {
     public class Paciente
     {
@@ -9,12 +11,13 @@
         public virtual List<Contato> Contato { get; set; }
         public virtual List<Agenda> Agenda { get; set; }
 
-        public Paciente() 
+        public static explicit operator Paciente(PacienteViewModels obj)
         {
-            Endereco = new Endereco();
-            Contato = new List<Contato>();
-            Contato.Add(new Contato());
-            Contato.Add(new Contato());
+            return new Paciente()
+            {
+                Nome = obj.Nome,
+                Email = obj.Email
+            };
         }
     }
 }

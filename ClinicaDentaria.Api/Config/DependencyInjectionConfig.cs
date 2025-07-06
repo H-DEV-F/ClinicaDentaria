@@ -1,8 +1,13 @@
-﻿using ClinicaDentaria.Infra.Context;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Http;
+using AdmCondominio.Api.Extensions;
 using Microsoft.Extensions.Options;
+using ClinicaDentaria.Infra.Context;
+using ClinicaDentaria.Domain.Contracts;
+using AdmCondominio.Domain.Notification;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using ClinicaDentaria.Infra.Repositories;
+using Microsoft.Extensions.DependencyInjection;
+using AdmCondominio.Domain.Notification.Interfaces;
 
 namespace ClinicaDentaria.Api.Config
 {
@@ -10,15 +15,17 @@ namespace ClinicaDentaria.Api.Config
     {
         public static IServiceCollection ResolveDependencies(this IServiceCollection services)
         {
-            services.AddScoped<ClinicaDentariaContext>();
+            services.AddScoped<ClinicaDentariaDbContext>();
 
-            //services.AddTransient<ICondominioRepository, CondominioRepository>();
-            //services.AddTransient<IApartamentoRepository, ApartamentoRepository>();
-            //services.AddTransient<IMoradorRepository, MoradorRepository>();
-            //services.AddTransient<IBlocoRepository, BlocoRepository>();
+            services.AddTransient<IPacienteRepository, PacienteRepository>();
+            services.AddTransient<IDentistaRepository, DentistaRepository>();
+            services.AddTransient<IContatoRepository, ContatoRepository>();
+            services.AddTransient<IAgendaRepository, AgendaRepository>();
+            services.AddTransient<IEnderecoRepository, EnderecoRepository>();
+            services.AddTransient<ISalaRepository, SalaRepository>();
 
-            //services.AddScoped<INotificador, Notificador>();
-            //services.AddScoped<IUser, AspNetUser>();
+            services.AddScoped<INotificador, Notificador>();
+            services.AddScoped<IUser, AspNetUser>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
