@@ -5,14 +5,11 @@ namespace ClinicaDentaria.Domain.Entities
 {
     public class Agenda
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public DateTime Data { get; set; }
-        public int DentistaId { get; set; }
-        [ForeignKey("DentistaId")]
+        public virtual Dentista Dentista { get; set; }
         public int SalaId { get; set; }
-        [ForeignKey("SalaId")]
-        public int? PacienteId { get; set; }
-        [ForeignKey("PacienteId")]
+        public virtual Paciente Paciente { get; set; }
         public bool Disponivel { get; set; }
 
         public static explicit operator Agenda(AgendaViewModels obj)
@@ -20,9 +17,6 @@ namespace ClinicaDentaria.Domain.Entities
             return new Agenda()
             {
                 Data = obj.Data,
-                DentistaId = obj.DentistaId,
-                SalaId = obj.SalaId,
-                PacienteId = obj.PacienteId,
                 Disponivel = obj.Disponivel
             };
         }

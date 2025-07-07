@@ -58,6 +58,5 @@ namespace ClinicaDentaria.Api.Config
 
             return services;
         }
-
     }
 }

@@ -73,9 +73,9 @@ namespace ClinicaDentaria.Api.Config
 
             app.UseRouting();
 
-            app.UseAuthorization();
-
             app.UseAuthentication();
+            
+            app.UseAuthorization();
 
             app.UseStaticFiles();
 

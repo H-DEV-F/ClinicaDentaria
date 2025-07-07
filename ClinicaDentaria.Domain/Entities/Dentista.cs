@@ -4,7 +4,7 @@ namespace ClinicaDentaria.Domain.Entities
 {
     public class Dentista
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Nome { get; set; }
         public string Email { get; set; }
         public virtual List<Agenda> Agenda { get; set; }
@@ -15,8 +15,7 @@ namespace ClinicaDentaria.Domain.Entities
             {
                 Id = obj.Id,
                 Nome = obj.Nome,
-                Email = obj.Email,
-                Agenda = new List<Agenda>()
+                Email = obj.Email
             };
         }
     }

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClinicaDentaria.Infra.Migrations
 {
     [DbContext(typeof(ClinicaDentariaDbContext))]
-    [Migration("20250706173415_Initial")]
+    [Migration("20250707055528_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,23 +26,21 @@ namespace ClinicaDentaria.Infra.Migrations
 
             modelBuilder.Entity("ClinicaDentaria.Domain.Entities.Agenda", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Data")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("DentistaId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("DentistaId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Disponivel")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("PacienteId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("PacienteId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("SalaId")
                         .HasColumnType("int");
@@ -58,14 +56,12 @@ namespace ClinicaDentaria.Infra.Migrations
 
             modelBuilder.Entity("ClinicaDentaria.Domain.Entities.Contato", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("PacienteId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("PacienteId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Telefone")
                         .IsRequired()
@@ -86,11 +82,9 @@ namespace ClinicaDentaria.Infra.Migrations
 
             modelBuilder.Entity("ClinicaDentaria.Domain.Entities.Dentista", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -137,24 +131,21 @@ namespace ClinicaDentaria.Infra.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PacienteId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("PacienteId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PacienteId")
-                        .IsUnique();
+                    b.HasIndex("PacienteId");
 
                     b.ToTable("Endereco");
                 });
 
             modelBuilder.Entity("ClinicaDentaria.Domain.Entities.Paciente", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -171,11 +162,9 @@ namespace ClinicaDentaria.Infra.Migrations
 
             modelBuilder.Entity("ClinicaDentaria.Domain.Entities.Sala", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Numero")
                         .HasMaxLength(100)
@@ -188,33 +177,43 @@ namespace ClinicaDentaria.Infra.Migrations
 
             modelBuilder.Entity("ClinicaDentaria.Domain.Entities.Agenda", b =>
                 {
-                    b.HasOne("ClinicaDentaria.Domain.Entities.Dentista", null)
+                    b.HasOne("ClinicaDentaria.Domain.Entities.Dentista", "Dentista")
                         .WithMany("Agenda")
                         .HasForeignKey("DentistaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ClinicaDentaria.Domain.Entities.Paciente", null)
+                    b.HasOne("ClinicaDentaria.Domain.Entities.Paciente", "Paciente")
                         .WithMany("Agenda")
-                        .HasForeignKey("PacienteId");
+                        .HasForeignKey("PacienteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Dentista");
+
+                    b.Navigation("Paciente");
                 });
 
             modelBuilder.Entity("ClinicaDentaria.Domain.Entities.Contato", b =>
                 {
-                    b.HasOne("ClinicaDentaria.Domain.Entities.Paciente", null)
+                    b.HasOne("ClinicaDentaria.Domain.Entities.Paciente", "Paciente")
                         .WithMany("Contato")
                         .HasForeignKey("PacienteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Paciente");
                 });
 
             modelBuilder.Entity("ClinicaDentaria.Domain.Entities.Endereco", b =>
                 {
-                    b.HasOne("ClinicaDentaria.Domain.Entities.Paciente", null)
-                        .WithOne("Endereco")
-                        .HasForeignKey("ClinicaDentaria.Domain.Entities.Endereco", "PacienteId")
+                    b.HasOne("ClinicaDentaria.Domain.Entities.Paciente", "Paciente")
+                        .WithMany("Endereco")
+                        .HasForeignKey("PacienteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Paciente");
                 });
 
             modelBuilder.Entity("ClinicaDentaria.Domain.Entities.Dentista", b =>
@@ -228,8 +227,7 @@ namespace ClinicaDentaria.Infra.Migrations
 
                     b.Navigation("Contato");
 
-                    b.Navigation("Endereco")
-                        .IsRequired();
+                    b.Navigation("Endereco");
                 });
 #pragma warning restore 612, 618
         }

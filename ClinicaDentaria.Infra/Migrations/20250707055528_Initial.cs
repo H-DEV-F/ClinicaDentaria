@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -12,8 +13,7 @@ namespace ClinicaDentaria.Infra.Migrations
                 name: "Dentista",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Nome = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
@@ -26,8 +26,7 @@ namespace ClinicaDentaria.Infra.Migrations
                 name: "Paciente",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Nome = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
@@ -40,8 +39,7 @@ namespace ClinicaDentaria.Infra.Migrations
                 name: "Sala",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Numero = table.Column<int>(type: "int", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
@@ -53,12 +51,11 @@ namespace ClinicaDentaria.Infra.Migrations
                 name: "Agenda",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Data = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DentistaId = table.Column<int>(type: "int", nullable: false),
+                    DentistaId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     SalaId = table.Column<int>(type: "int", nullable: false),
-                    PacienteId = table.Column<int>(type: "int", nullable: true),
+                    PacienteId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Disponivel = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -74,16 +71,16 @@ namespace ClinicaDentaria.Infra.Migrations
                         name: "FK_Agenda_Paciente_PacienteId",
                         column: x => x.PacienteId,
                         principalTable: "Paciente",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Contato",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PacienteId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PacienteId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Tipo = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     Telefone = table.Column<string>(type: "nvarchar(14)", maxLength: 14, nullable: false)
                 },
@@ -104,7 +101,7 @@ namespace ClinicaDentaria.Infra.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PacienteId = table.Column<int>(type: "int", nullable: false),
+                    PacienteId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Logradouro = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Numero = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Bairro = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -141,8 +138,7 @@ namespace ClinicaDentaria.Infra.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Endereco_PacienteId",
                 table: "Endereco",
-                column: "PacienteId",
-                unique: true);
+                column: "PacienteId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
